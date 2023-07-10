@@ -13,8 +13,6 @@ import Link from "next/link";
 
 type PagePropsT = { page: ArboretumPageNodeT; data: PageQuery };
 
-const preview: boolean = false;
-
 export default function Page(props: PagePropsT) {
   const renderChildPagesLinks = () => {
     if (props.page.type === "page" && props.page.children) {
@@ -57,6 +55,7 @@ export default function Page(props: PagePropsT) {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
+  const preview = !!context.preview;
   const config = getEnvConfigEff(process.env);
   const params = arboretumClientParamsFromConfig(config);
 
@@ -68,9 +67,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
         : [maybeSlugs]
       : undefined;
   const path = slugs && slugs?.length > 0 ? "/" + slugs.join("/") : undefined;
-  const { client, warnings } = await cachedArboretumClient(
-    params(!!context.preview)
-  );
+  const { client, warnings } = await cachedArboretumClient(params(preview));
 
   if (warnings) {
     console.warn(`Arboretum warnings:\n`);
@@ -86,7 +83,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const pageE = client.pageByPath(path, { withChildren: true });
 
   if (pageE._tag === "Left") {
-    throw new Error(pageE.left);
+    console.log(
+      `Failed to get page by path: ${path}, preview: ${preview} (details: ${pageE.left})`
+    );
+    return {
+      notFound: true,
+    };
   }
 
   const data = await fetchPageData({
@@ -98,7 +100,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   })({
     locale: pageE.right.localeCode,
     preview: !!context.preview,
-    pageId: pageE.right.id,
+    pageId: pageE.right.type === "page" ? pageE.right.id : pageE.right.pageId,
   });
 
   const props: PagePropsT = {
@@ -114,30 +116,39 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const config = getEnvConfigEff(process.env);
-  // TODO: Handle contentful preview mode
-  const params = arboretumClientParamsFromConfig(config)(false);
 
-  const createArboretumClientEff = () => createAndCacheArboretumClient(params);
+  const pagesForModeThrowable = async (preview: boolean) => {
+    const params = arboretumClientParamsFromConfig(config)(preview);
+    const createArboretumClientEff = () =>
+      createAndCacheArboretumClient(params);
 
-  const { client: arboretumClient, warnings } = await (config.dev
-    ? cachedArboretumClient(params).catch((_) => createArboretumClientEff())
-    : createArboretumClientEff());
+    const { client, warnings } = await (config.dev
+      ? cachedArboretumClient(params).catch((_) => createArboretumClientEff())
+      : createArboretumClientEff());
+    if (warnings) {
+      console.warn(`Arboretum warnings:\n`);
+      warnings.forEach((warning) => {
+        console.warn(warning);
+      });
+    }
 
-  if (warnings) {
-    console.warn(`Arboretum warnings:\n`);
-    warnings.forEach((warning) => {
-      console.warn(warning);
-    });
-  }
+    const pages = client.pages();
+    if (pages._tag === "Right") {
+      return pages.right;
+    } else {
+      throw new Error(pages.left);
+    }
+  };
 
-  const pages = arboretumClient.pages();
+  const previewPages = await pagesForModeThrowable(true);
+  const publishedPages = await pagesForModeThrowable(false);
 
-  if (pages._tag === "Right") {
-    return {
-      fallback: false,
-      paths: pages.right.map(({ path }) => path),
-    };
-  } else {
-    throw new Error(`Failed to get arboretum pages (details: ${pages.left})`);
-  }
+  const paths = Array.from(
+    new Set([...previewPages, ...publishedPages].map(({ path }) => path))
+  );
+
+  return {
+    fallback: false,
+    paths,
+  };
 };

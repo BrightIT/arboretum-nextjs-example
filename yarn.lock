@@ -1012,10 +1012,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@p8marketing/arboretum-sdk@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@p8marketing/arboretum-sdk/-/arboretum-sdk-0.0.1.tgz#93b89d9fff7e5cfae3cd89cceea55c72360248ea"
-  integrity sha512-hig0y1OvfAMc5jFTyF1UMw8dHv6x1QiRrHo+dGYGVERrDc6g4TmAZbqHQYLdjXbdBtCS1xorWtBjR1hPeR9/vw==
+"@p8marketing/arboretum-sdk@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@p8marketing/arboretum-sdk/-/arboretum-sdk-0.0.3.tgz#cfb30b3a721a1ee11f80e1755425981b97d5e6ac"
+  integrity sha512-ri1X1FHpahVC8C0tkVB47c3mkiNPvxYlr8mpX7x7GfNv0gsj/F9f7YrUcUn6QG6+Fjcn7GfbyZNJsOWW3cehKg==
   dependencies:
     contentful "^9.2.5"
     contentful-management "10.29.1"
@@ -3398,9 +3398,9 @@ type-fest@^0.21.3:
   integrity sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==
 
 type-fest@^3.0.0:
-  version "3.12.0"
-  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-3.12.0.tgz#4ce26edc1ccc59fc171e495887ef391fe1f5280e"
-  integrity sha512-qj9wWsnFvVEMUDbESiilKeXeHL7FwwiFcogfhfyjmvT968RXSvnl23f1JOClTHYItsi7o501C/7qVllscUP3oA==
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-3.13.0.tgz#b088347ae73779a750c461694b264340c4c8c0d7"
+  integrity sha512-Gur3yQGM9qiLNs0KPP7LPgeRbio2QTt4xXouobMCarR0/wyW3F+F/+OWwshg3NG0Adon7uQfSZBpB46NfhoF1A==
 
 typescript@5.1.6:
   version "5.1.6"

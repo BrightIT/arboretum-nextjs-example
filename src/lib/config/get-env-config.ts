@@ -1,5 +1,6 @@
 export type EnvConfigT = {
   dev: boolean;
+  previewSecurityToken?: string;
   contentful: {
     space: string;
     environment: string;
@@ -18,6 +19,7 @@ export const getEnvConfigEff = (env: NodeJS.Process["env"]): EnvConfigT => {
   const environment = env?.[environmentEnv];
   const cdaAccessToken = env?.[cdaAccessTokenEnv];
   const cpaAccessToken = env?.[cpaAccessTokenEnv];
+  const previewSecurityToken = env?.["PREVIEW_SECURITY_TOKEN"];
 
   const envErr = (env: string) =>
     new Error(`Environment variable ${env} is not defined`);
@@ -33,6 +35,7 @@ export const getEnvConfigEff = (env: NodeJS.Process["env"]): EnvConfigT => {
   } else {
     return {
       dev,
+      previewSecurityToken,
       contentful: {
         space,
         environment,

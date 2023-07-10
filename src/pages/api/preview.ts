@@ -1,13 +1,15 @@
 import { NextApiHandler } from "next";
+import { getEnvConfigEff } from "../../lib/config/get-env-config";
 
 const handler: NextApiHandler = (req, res) => {
+  const config = getEnvConfigEff(process.env);
   const maybeSlug = req.query?.slug;
 
   const path = typeof maybeSlug === "string" ? maybeSlug : undefined;
 
   // Check the secret and next parameters
   // This secret should only be known to this API route and the CMS
-  if (req.query.secret !== "MY_SECRET_TOKEN" || !req.query.slug) {
+  if (req.query.secret !== config.previewSecurityToken || !req.query.slug) {
     return res.status(401).json({ message: "Invalid token" });
   }
 
@@ -30,8 +32,6 @@ const handler: NextApiHandler = (req, res) => {
   // Redirect to the path from the fetched post
   // We don't redirect to req.query.slug as that might lead to open redirect vulnerabilities
   //   res.redirect(post.slug);
-
-  console.log(path);
 
   res.redirect(path);
 };
