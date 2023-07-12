@@ -1,31 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# A statically generated website example using Next.js, Contentful and Arboretum SDK
 
-## Getting Started
+This project showcases [Next.js](https://nextjs.org/) [Static Generation](https://nextjs.org/docs/basic-features/pages) feature using [Contentful](https://www.contentful.com/) and [Arboretum SDK](https://github.com/BrightIT/arboretum-sdk).
 
-First, run the development server:
+## How to use
+
+### Step 1. Create an account and a space on Contentful
+
+First, [create an account on Contentful](https://www.contentful.com/sign-up/).
+
+After creating an account, create a new empty **space**.
+
+### Step 2. Install Arboretum app
+
+The easiest way to get stared is to install [Arboretum app](https://www.contentful.com/marketplace/contentful-app/arboretum/) in yor environment in contentful. By selecting "Automatic" installation mode Arboretum app will take care of all required configuration and will create sample content.
+
+![](./arboretum-app-install-speedx2.gif)
+
+### Step 3. Clone project
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+git clone git@github.com:BrightIT/arboretum-nextjs-example.git
+cd arboretum-nextjs-example
 ```
 
+### Step 4. Define .env.local
+
+```bash
+CONTENTFUL_SPACE=
+CONTENTFUL_ENVIRONMENT=
+CONTENTFUL_CDA_ACCESS_TOKEN=
+CONTENTFUL_CPA_ACCESS_TOKEN=
+
+# Arbitrary security token used to restrict access to preview mode
+PREVIEW_SECURITY_TOKEN=
+```
+
+### Step 5. Start project
+```bash
+yarn dev
+```
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
 ## Deploy on Vercel
 
