@@ -1,12 +1,10 @@
 import { GetStaticProps } from "next";
 import { arboretumClientParamsFromConfig } from "../lib/arboretum/arboretum-client-params-from-config";
-import {
-  cachedArboretumClient,
-  createAndCacheArboretumClient,
-} from "../lib/arboretum/cached-arboretum-client";
+import { cachedArboretumClientF } from "../lib/arboretum/cached-arboretum-client";
 import { getEnvConfigEff } from "../lib/config/get-env-config";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { arboretumClientF } from "../lib/arboretum/arboretum-client";
 
 export default function Home(props: { redirectTo: string }) {
   const router = useRouter();
@@ -20,26 +18,21 @@ export default function Home(props: { redirectTo: string }) {
 export const getStaticProps: GetStaticProps = async (context) => {
   const config = getEnvConfigEff(process.env);
   const params = arboretumClientParamsFromConfig(config)(!!context.preview);
-  const { client: arboretumClient } = await cachedArboretumClient(params).catch(
-    (_) => createAndCacheArboretumClient(params)
-  );
+  const client = config.dev
+    ? await cachedArboretumClientF(config.arboretumRevalidationMs)(params)
+    : await arboretumClientF(config.arboretumRevalidationMs)(params);
 
-  const defaultLocale = arboretumClient.locales().find((l) => l.default);
+  const defaultLocale = client.locales().find((l) => l.default);
 
-  const homePages = defaultLocale
-    ? arboretumClient.pagesByTagId(defaultLocale.code, "pageHome")
+  const homePage = defaultLocale
+    ? client.homePage(defaultLocale.code)
     : { _tag: "Left" as const, left: "Default Locale not found" };
 
-  if (homePages._tag === "Right") {
-    if (homePages.right.length > 0) {
-      const [homePage] = homePages.right;
-      return {
-        props: { redirectTo: homePage.path },
-      };
-    } else {
-      throw new Error(`Home page not found`);
-    }
+  if (homePage._tag === "Right") {
+    return {
+      props: { redirectTo: homePage.right.path },
+    };
   } else {
-    throw new Error(homePages.left);
+    throw new Error(homePage.left);
   }
 };

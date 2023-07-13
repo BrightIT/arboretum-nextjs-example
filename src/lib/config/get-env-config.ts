@@ -7,6 +7,7 @@ export type EnvConfigT = {
     cdaAccessToken: string;
     cpaAccessToken: string;
   };
+  arboretumRevalidationMs?: number;
 };
 
 export const getEnvConfigEff = (env: NodeJS.Process["env"]): EnvConfigT => {
@@ -20,6 +21,16 @@ export const getEnvConfigEff = (env: NodeJS.Process["env"]): EnvConfigT => {
   const cdaAccessToken = env?.[cdaAccessTokenEnv];
   const cpaAccessToken = env?.[cpaAccessTokenEnv];
   const previewSecurityToken = env?.["PREVIEW_SECURITY_TOKEN"];
+  const maybeArboretumRevalidationMs = env?.["ARBORETUM_REVALIDATION_MS"];
+  const maybeArboretumRevalidationMsNum =
+    typeof maybeArboretumRevalidationMs !== "undefined"
+      ? Number(maybeArboretumRevalidationMs)
+      : undefined;
+  const arboretumRevalidationMs =
+    typeof maybeArboretumRevalidationMsNum !== "undefined" &&
+    isNaN(maybeArboretumRevalidationMsNum)
+      ? undefined
+      : maybeArboretumRevalidationMsNum;
 
   const envErr = (env: string) =>
     new Error(`Environment variable ${env} is not defined`);
@@ -42,6 +53,7 @@ export const getEnvConfigEff = (env: NodeJS.Process["env"]): EnvConfigT => {
         cdaAccessToken,
         cpaAccessToken,
       },
+      arboretumRevalidationMs,
     };
   }
 };

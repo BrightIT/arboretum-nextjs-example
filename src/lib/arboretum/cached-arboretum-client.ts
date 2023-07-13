@@ -8,6 +8,11 @@ import { ArboretumClientParamsT } from "./arboretum-client-params-from-config";
 
 type ArboretumCachedDataT = ReturnType<ArboretumClientT["cachedData"]>;
 
+type ArboretumCachedDataWithTimestampT = {
+  data: ArboretumCachedDataT;
+  timestamp: string;
+};
+
 const arboretumDataCachePath = (preview: boolean) =>
   path.join(
     __dirname,
@@ -30,38 +35,106 @@ const replacer = (key: any, value: any) => {
 
 const cacheArboretumData = async (
   preview: boolean,
-  data: ArboretumCachedDataT
-): Promise<void> =>
-  fs.promises.writeFile(
-    arboretumDataCachePath(preview),
-    JSON.stringify(data, replacer)
+  data: ArboretumCachedDataWithTimestampT
+): Promise<void> => {
+  const path = arboretumDataCachePath(preview);
+  console.log(
+    `Caching arboretum data (timestamp: ${data.timestamp}, file: ${path})`
   );
+  return fs.promises.writeFile(path, JSON.stringify(data, replacer));
+};
 
-export const cachedArboretumClient = async (
+const cachedArboretumClient = async (
   params: ArboretumClientParamsT
-): Promise<{ client: ArboretumClientT; warnings?: Array<string> }> => {
-  const cachedData: ArboretumCachedDataT = JSON.parse(
+): Promise<{
+  client: ArboretumClientT;
+  warnings?: Array<string>;
+  cacheUpdatedTimestamp: Date;
+}> => {
+  const cachedData: ArboretumCachedDataWithTimestampT = JSON.parse(
     await fs.promises.readFile(arboretumDataCachePath(params.preview), {
       encoding: "utf-8",
     }),
     jsonReviver
   );
 
-  return createArboretumClientFromCdaParams({
+  const { client, warnings } = await createArboretumClientFromCdaParams({
     ...params,
-    options: { data: cachedData },
+    options: { data: cachedData.data },
   });
+
+  return {
+    client,
+    warnings,
+    cacheUpdatedTimestamp: new Date(cachedData.timestamp),
+  };
 };
 
-export const createAndCacheArboretumClient = async (
+const createAndCacheArboretumClient = async (
   params: ArboretumClientParamsT
 ): Promise<{ client: ArboretumClientT; warnings?: Array<string> }> => {
+  const timestamp = new Date();
   const res = await createArboretumClientFromCdaParams({
     ...params,
     options: { ...params.options, eagerly: true },
   });
 
-  await cacheArboretumData(params.preview, res.client.cachedData());
+  await cacheArboretumData(params.preview, {
+    data: res.client.cachedData(),
+    timestamp: timestamp.toISOString(),
+  });
 
   return res;
 };
+
+let regenerationInProgress = false;
+
+export const cachedArboretumClientF =
+  (revalidationMs?: number) =>
+  async (params: ArboretumClientParamsT): Promise<ArboretumClientT> => {
+    const {
+      client,
+      warnings,
+      cacheUpdatedTimestamp,
+    }: {
+      client: ArboretumClientT;
+      warnings?: Array<string>;
+      cacheUpdatedTimestamp?: Date;
+    } = await cachedArboretumClient(params).catch((_) =>
+      createAndCacheArboretumClient(params).then((res) => {
+        console.log(
+          `Arboretum ${
+            params.preview ? "preview" : "published"
+          } client has been created`
+        );
+        return res;
+      })
+    );
+
+    if (warnings) {
+      console.warn(`Arboretum warnings:\n`);
+      warnings.forEach((warning) => {
+        console.warn(warning);
+      });
+    }
+
+    if (
+      !regenerationInProgress &&
+      cacheUpdatedTimestamp &&
+      typeof revalidationMs !== "undefined" &&
+      new Date().getTime() - cacheUpdatedTimestamp.getTime() > revalidationMs
+    ) {
+      regenerationInProgress = true;
+      // Fire and forget
+      createAndCacheArboretumClient(params).finally(() => {
+        regenerationInProgress = false;
+        console.log(
+          `Arboretum ${
+            params.preview ? "preview" : "published"
+          } client has been regenerated`
+        );
+      });
+    }
+
+    return client;
+  };

@@ -1012,10 +1012,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@p8marketing/arboretum-sdk@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@p8marketing/arboretum-sdk/-/arboretum-sdk-0.0.3.tgz#cfb30b3a721a1ee11f80e1755425981b97d5e6ac"
-  integrity sha512-ri1X1FHpahVC8C0tkVB47c3mkiNPvxYlr8mpX7x7GfNv0gsj/F9f7YrUcUn6QG6+Fjcn7GfbyZNJsOWW3cehKg==
+"@p8marketing/arboretum-sdk@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@p8marketing/arboretum-sdk/-/arboretum-sdk-0.0.4.tgz#19b7a4e738ac919404749e2ff420d13907c100bd"
+  integrity sha512-cVlhGVDgSuPwl//uotns+9/02KTfrHr6jRlZcWF2iDM9P5z9OEKGG2DKkcoXM3VHZ+KFHz/TyhVm2XIaIPEe0w==
   dependencies:
     contentful "^9.2.5"
     contentful-management "10.29.1"

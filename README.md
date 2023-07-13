@@ -1,6 +1,6 @@
-# A statically generated website example using Next.js, Contentful and Arboretum SDK
+# A SSR website example using Next.js, Contentful and Arboretum SDK
 
-This project showcases [Next.js](https://nextjs.org/) [Static Generation](https://nextjs.org/docs/basic-features/pages) feature using [Contentful](https://www.contentful.com/) and [Arboretum SDK](https://github.com/BrightIT/arboretum-sdk).
+This project showcases [Next.js](https://nextjs.org/) [Server-side Rendering (SSR)](https://nextjs.org/docs/pages/building-your-application/rendering/server-side-rendering) feature using [Contentful](https://www.contentful.com/) and [Arboretum SDK](https://github.com/BrightIT/arboretum-sdk).
 
 ## How to use
 
@@ -30,6 +30,8 @@ CONTENTFUL_SPACE=
 CONTENTFUL_ENVIRONMENT=
 CONTENTFUL_CDA_ACCESS_TOKEN=
 CONTENTFUL_CPA_ACCESS_TOKEN=
+
+ARBORETUM_REVALIDATION_MS=
 
 # Arbitrary security token used to restrict access to preview mode
 PREVIEW_SECURITY_TOKEN=
