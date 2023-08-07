@@ -12,7 +12,7 @@ After creating an account, create a new empty **space**.
 
 ### Step 2. Install Arboretum app
 
-The easiest way to get stared is to install [Arboretum app](https://www.contentful.com/marketplace/contentful-app/arboretum/) in yor environment in contentful. By selecting "Automatic" installation mode Arboretum app will take care of all required configuration and will create sample content.
+The easiest way to get stared is to install [Arboretum app](https://www.p8.group/en/products/arboretum) in yor environment in contentful. By selecting "Automatic" installation mode Arboretum app will take care of all required configuration and will create sample content.
 
 ![](./arboretum-app-install-speedx2.gif)
 
