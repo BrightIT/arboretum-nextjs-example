@@ -1,4 +1,4 @@
-import { ArboretumClientConfigFromCdaParamsT } from "@p8marketing/arboretum-sdk";
+import { ArboretumClientConfigFromCdaParamsT } from "@bright.global/arboretum-sdk";
 import { arboretumContentfulConfiguration } from "../../configuration/arboretum-contentful-configuration";
 import { EnvConfigT } from "../config/get-env-config";
 

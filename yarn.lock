@@ -507,6 +507,14 @@
     "@babel/helper-validator-identifier" "^7.22.5"
     to-fast-properties "^2.0.0"
 
+"@bright.global/arboretum-sdk@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@bright.global/arboretum-sdk/-/arboretum-sdk-0.0.7.tgz#65a392b62be95e9bb72f511ce7e02591bbbf6f27"
+  integrity sha512-UQmMWKqheq8UAsFTpW5XsSLph0Cr2Jf0mcgtDMHrULEz99khlyTPct6s52wgbP75/YTEcb+X2vev4wOSyNL7NA==
+  dependencies:
+    contentful "^9.2.5"
+    contentful-management "10.29.1"
+
 "@contentful/rich-text-react-renderer@^15.17.0":
   version "15.17.0"
   resolved "https://registry.yarnpkg.com/@contentful/rich-text-react-renderer/-/rich-text-react-renderer-15.17.0.tgz#88b6c707eec5d0d45491be830f0cfb1a0fae9472"
@@ -1011,14 +1019,6 @@
   dependencies:
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
-
-"@p8marketing/arboretum-sdk@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@p8marketing/arboretum-sdk/-/arboretum-sdk-0.0.4.tgz#19b7a4e738ac919404749e2ff420d13907c100bd"
-  integrity sha512-cVlhGVDgSuPwl//uotns+9/02KTfrHr6jRlZcWF2iDM9P5z9OEKGG2DKkcoXM3VHZ+KFHz/TyhVm2XIaIPEe0w==
-  dependencies:
-    contentful "^9.2.5"
-    contentful-management "10.29.1"
 
 "@parcel/watcher-android-arm64@2.2.0":
   version "2.2.0"

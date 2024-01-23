@@ -1,7 +1,7 @@
 import {
   ArboretumClientT,
   createArboretumClientFromCdaParams,
-} from "@p8marketing/arboretum-sdk";
+} from "@bright.global/arboretum-sdk";
 import path from "path";
 import fs from "fs";
 import { ArboretumClientParamsT } from "./arboretum-client-params-from-config";

@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { ArboretumPageNodeT } from "@p8marketing/arboretum-sdk";
+import { ArboretumPageNodeT } from "@bright.global/arboretum-sdk";
 import { getEnvConfigEff } from "../lib/config/get-env-config";
 import { cachedArboretumClientF } from "../lib/arboretum/cached-arboretum-client";
 import { arboretumClientParamsFromConfig } from "../lib/arboretum/arboretum-client-params-from-config";

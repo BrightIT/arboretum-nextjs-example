@@ -10,11 +10,11 @@
     "generate-contentful-types": "graphql-codegen -r dotenv/config --config codegen.yml dotenv_config_path=./.env.local"
   },
   "dependencies": {
+    "@bright.global/arboretum-sdk": "^0.0.7",
     "@contentful/rich-text-react-renderer": "^15.17.0",
     "@graphql-codegen/cli": "^4.0.1",
     "@graphql-codegen/typescript": "^4.0.1",
     "@graphql-codegen/typescript-operations": "^4.0.1",
-    "@p8marketing/arboretum-sdk": "^0.0.4",
     "@types/node": "20.4.0",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",

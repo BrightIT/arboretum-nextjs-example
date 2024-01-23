@@ -1,4 +1,4 @@
-import { ArboretumClientConfigFromCdaParamsT } from "@p8marketing/arboretum-sdk";
+import { ArboretumClientConfigFromCdaParamsT } from "@bright.global/arboretum-sdk";
 
 export const arboretumContentfulConfiguration: ArboretumClientConfigFromCdaParamsT["contentful"]["options"] =
   {
