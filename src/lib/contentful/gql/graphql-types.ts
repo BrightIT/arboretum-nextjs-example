@@ -204,8 +204,9 @@ export enum AssetOrder {
 }
 
 /** [See type definition](https://app.contentful.com/spaces/8h4rcnu50txt/content_types/component_text) */
-export type ComponentText = Entry & {
+export type ComponentText = Entry & _Node & {
   __typename?: 'ComponentText';
+  _id: Scalars['ID']['output'];
   contentfulMetadata: ContentfulMetadata;
   linkedFrom?: Maybe<ComponentTextLinkingCollections>;
   sys: Sys;
@@ -337,7 +338,24 @@ export type ComponentTextTextLinks = {
 
 export type ComponentTextTextResources = {
   __typename?: 'ComponentTextTextResources';
-  block: Array<ResourceLink>;
+  block: Array<ComponentTextTextResourcesBlock>;
+  hyperlink: Array<ComponentTextTextResourcesHyperlink>;
+  inline: Array<ComponentTextTextResourcesInline>;
+};
+
+export type ComponentTextTextResourcesBlock = ResourceLink & {
+  __typename?: 'ComponentTextTextResourcesBlock';
+  sys: ResourceSys;
+};
+
+export type ComponentTextTextResourcesHyperlink = ResourceLink & {
+  __typename?: 'ComponentTextTextResourcesHyperlink';
+  sys: ResourceSys;
+};
+
+export type ComponentTextTextResourcesInline = ResourceLink & {
+  __typename?: 'ComponentTextTextResourcesInline';
+  sys: ResourceSys;
 };
 
 export type ContentfulMetadata = {
@@ -358,7 +376,7 @@ export type ContentfulMetadataTagsFilter = {
 
 /**
  * Represents a tag entity for finding and organizing content easily.
- *     Find out more here: https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/content-tags
+ *       Find out more here: https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/content-tags
  */
 export type ContentfulTag = {
   __typename?: 'ContentfulTag';
@@ -493,8 +511,9 @@ export type ImageTransformOptions = {
 };
 
 /** [See type definition](https://app.contentful.com/spaces/8h4rcnu50txt/content_types/page) */
-export type Page = Entry & {
+export type Page = Entry & _Node & {
   __typename?: 'Page';
+  _id: Scalars['ID']['output'];
   childPagesCollection?: Maybe<PageChildPagesCollection>;
   contentAreaCollection?: Maybe<PageContentAreaCollection>;
   contentfulMetadata: ContentfulMetadata;
@@ -707,6 +726,7 @@ export enum PageOrder {
 
 export type Query = {
   __typename?: 'Query';
+  _node?: Maybe<_Node>;
   asset?: Maybe<Asset>;
   assetCollection?: Maybe<AssetCollection>;
   componentText?: Maybe<ComponentText>;
@@ -714,10 +734,15 @@ export type Query = {
   entryCollection?: Maybe<EntryCollection>;
   page?: Maybe<Page>;
   pageCollection?: Maybe<PageCollection>;
-  redirect?: Maybe<Redirect>;
-  redirectCollection?: Maybe<RedirectCollection>;
   seo?: Maybe<Seo>;
   seoCollection?: Maybe<SeoCollection>;
+};
+
+
+export type Query_NodeArgs = {
+  id: Scalars['ID']['input'];
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
@@ -782,23 +807,6 @@ export type QueryPageCollectionArgs = {
 };
 
 
-export type QueryRedirectArgs = {
-  id: Scalars['String']['input'];
-  locale?: InputMaybe<Scalars['String']['input']>;
-  preview?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-
-export type QueryRedirectCollectionArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  locale?: InputMaybe<Scalars['String']['input']>;
-  order?: InputMaybe<Array<InputMaybe<RedirectOrder>>>;
-  preview?: InputMaybe<Scalars['Boolean']['input']>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<RedirectFilter>;
-};
-
-
 export type QuerySeoArgs = {
   id: Scalars['String']['input'];
   locale?: InputMaybe<Scalars['String']['input']>;
@@ -815,131 +823,20 @@ export type QuerySeoCollectionArgs = {
   where?: InputMaybe<SeoFilter>;
 };
 
-/** [See type definition](https://app.contentful.com/spaces/8h4rcnu50txt/content_types/redirect) */
-export type Redirect = Entry & {
-  __typename?: 'Redirect';
-  contentfulMetadata: ContentfulMetadata;
-  internalName?: Maybe<Scalars['String']['output']>;
-  linkedFrom?: Maybe<RedirectLinkingCollections>;
-  page?: Maybe<Entry>;
-  path?: Maybe<Scalars['String']['output']>;
-  sys: Sys;
-  type?: Maybe<Scalars['String']['output']>;
-};
-
-
-/** [See type definition](https://app.contentful.com/spaces/8h4rcnu50txt/content_types/redirect) */
-export type RedirectInternalNameArgs = {
-  locale?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-/** [See type definition](https://app.contentful.com/spaces/8h4rcnu50txt/content_types/redirect) */
-export type RedirectLinkedFromArgs = {
-  allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-};
-
-
-/** [See type definition](https://app.contentful.com/spaces/8h4rcnu50txt/content_types/redirect) */
-export type RedirectPageArgs = {
-  locale?: InputMaybe<Scalars['String']['input']>;
-  preview?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-
-/** [See type definition](https://app.contentful.com/spaces/8h4rcnu50txt/content_types/redirect) */
-export type RedirectPathArgs = {
-  locale?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-/** [See type definition](https://app.contentful.com/spaces/8h4rcnu50txt/content_types/redirect) */
-export type RedirectTypeArgs = {
-  locale?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type RedirectCollection = {
-  __typename?: 'RedirectCollection';
-  items: Array<Maybe<Redirect>>;
-  limit: Scalars['Int']['output'];
-  skip: Scalars['Int']['output'];
-  total: Scalars['Int']['output'];
-};
-
-export type RedirectFilter = {
-  AND?: InputMaybe<Array<InputMaybe<RedirectFilter>>>;
-  OR?: InputMaybe<Array<InputMaybe<RedirectFilter>>>;
-  contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
-  internalName?: InputMaybe<Scalars['String']['input']>;
-  internalName_contains?: InputMaybe<Scalars['String']['input']>;
-  internalName_exists?: InputMaybe<Scalars['Boolean']['input']>;
-  internalName_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  internalName_not?: InputMaybe<Scalars['String']['input']>;
-  internalName_not_contains?: InputMaybe<Scalars['String']['input']>;
-  internalName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  page_exists?: InputMaybe<Scalars['Boolean']['input']>;
-  path?: InputMaybe<Scalars['String']['input']>;
-  path_contains?: InputMaybe<Scalars['String']['input']>;
-  path_exists?: InputMaybe<Scalars['Boolean']['input']>;
-  path_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  path_not?: InputMaybe<Scalars['String']['input']>;
-  path_not_contains?: InputMaybe<Scalars['String']['input']>;
-  path_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  sys?: InputMaybe<SysFilter>;
-  type?: InputMaybe<Scalars['String']['input']>;
-  type_contains?: InputMaybe<Scalars['String']['input']>;
-  type_exists?: InputMaybe<Scalars['Boolean']['input']>;
-  type_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  type_not?: InputMaybe<Scalars['String']['input']>;
-  type_not_contains?: InputMaybe<Scalars['String']['input']>;
-  type_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-};
-
-export type RedirectLinkingCollections = {
-  __typename?: 'RedirectLinkingCollections';
-  entryCollection?: Maybe<EntryCollection>;
-};
-
-
-export type RedirectLinkingCollectionsEntryCollectionArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  locale?: InputMaybe<Scalars['String']['input']>;
-  preview?: InputMaybe<Scalars['Boolean']['input']>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export enum RedirectOrder {
-  InternalNameAsc = 'internalName_ASC',
-  InternalNameDesc = 'internalName_DESC',
-  PathAsc = 'path_ASC',
-  PathDesc = 'path_DESC',
-  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
-  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
-  SysIdAsc = 'sys_id_ASC',
-  SysIdDesc = 'sys_id_DESC',
-  SysPublishedAtAsc = 'sys_publishedAt_ASC',
-  SysPublishedAtDesc = 'sys_publishedAt_DESC',
-  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
-  SysPublishedVersionDesc = 'sys_publishedVersion_DESC',
-  TypeAsc = 'type_ASC',
-  TypeDesc = 'type_DESC'
-}
-
 export type ResourceLink = {
-  __typename?: 'ResourceLink';
   sys: ResourceSys;
 };
 
 export type ResourceSys = {
   __typename?: 'ResourceSys';
   linkType: Scalars['String']['output'];
-  type: Scalars['String']['output'];
   urn: Scalars['String']['output'];
 };
 
 /** [See type definition](https://app.contentful.com/spaces/8h4rcnu50txt/content_types/seo) */
-export type Seo = Entry & {
+export type Seo = Entry & _Node & {
   __typename?: 'Seo';
+  _id: Scalars['ID']['output'];
   contentfulMetadata: ContentfulMetadata;
   description?: Maybe<Scalars['String']['output']>;
   keywords?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
@@ -1105,6 +1002,8 @@ export type Sys = {
   environmentId: Scalars['String']['output'];
   firstPublishedAt?: Maybe<Scalars['DateTime']['output']>;
   id: Scalars['String']['output'];
+  /** The locale that was requested. */
+  locale?: Maybe<Scalars['String']['output']>;
   publishedAt?: Maybe<Scalars['DateTime']['output']>;
   publishedVersion?: Maybe<Scalars['Int']['output']>;
   spaceId: Scalars['String']['output'];
@@ -1145,6 +1044,10 @@ export type SysFilter = {
   publishedVersion_lte?: InputMaybe<Scalars['Float']['input']>;
   publishedVersion_not?: InputMaybe<Scalars['Float']['input']>;
   publishedVersion_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
+};
+
+export type _Node = {
+  _id: Scalars['ID']['output'];
 };
 
 export type CfComponentTextNestedFilter = {
@@ -1240,4 +1143,4 @@ export type PageQueryVariables = Exact<{
 }>;
 
 
-export type PageQuery = { __typename?: 'Query', page?: { __typename?: 'Page', title?: string | null, seo?: { __typename?: 'Seo', title?: string | null, description?: string | null, keywords?: Array<string | null> | null } | null, contentAreaCollection?: { __typename?: 'PageContentAreaCollection', items: Array<{ __typename?: 'ComponentText', title?: string | null, text?: { __typename?: 'ComponentTextText', json: any } | null } | null> } | null } | null };
+export type PageQuery = { __typename?: 'Query', page?: { __typename?: 'Page', title?: string | null, seo?: { __typename?: 'Seo', title?: string | null, description?: string | null, keywords?: Array<string | null> | null } | null, contentAreaCollection?: { __typename?: 'PageContentAreaCollection', items: Array<{ __typename: 'ComponentText', title?: string | null, text?: { __typename?: 'ComponentTextText', json: any } | null } | null> } | null } | null };
