@@ -7,7 +7,6 @@ export default async function Page({
   params,
 }: {
   params: { slugs: Array<string> };
-}) { 
-  const path = `/${(params.slugs || [])?.join("/")}`;
-  return <ContentfulPage path={path} mode="preview" />;
+}) {
+  return <ContentfulPage params={params} mode="preview" />;
 }

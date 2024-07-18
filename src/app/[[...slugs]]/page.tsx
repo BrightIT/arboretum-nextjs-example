@@ -1,13 +1,12 @@
 import { ContentfulPage } from "../templates/contentful-page";
 
 export const dynamicParams = true;
-export const revalidate = 30;
+export const revalidate = 10;
 
 export default async function Page({
   params,
 }: {
   params: { slugs: Array<string> };
 }) {
-  const path = `/${(params.slugs || [])?.join("/")}`;
-  return <ContentfulPage path={path} mode="published" />;
+  return <ContentfulPage params={params} mode="published" />;
 }

@@ -6,12 +6,11 @@ import Link from "next/link";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { Mode } from "../../lib/types";
 
-const contentfulHost = "https://cdn.contentful.com";
-
 export const ContentfulPage: React.FC<{
   mode: Mode;
-  path: string;
-}> = async ({ path, mode }) => {
+  params: { slugs: Array<string> };
+}> = async ({ params, mode }) => {
+  const path = `/${(params.slugs || [])?.join("/")}`;
   const { cdaAccessToken, cpaAccessToken, environment, space } =
     contentfulConfig;
   const accessToken = mode === "preview" ? cpaAccessToken : cdaAccessToken;
